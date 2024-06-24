@@ -1,0 +1,7 @@
+README.md
+setup.py
+PyGUI.egg-info/PKG-INFO
+PyGUI.egg-info/SOURCES.txt
+PyGUI.egg-info/dependency_links.txt
+PyGUI.egg-info/requires.txt
+PyGUI.egg-info/top_level.txt
