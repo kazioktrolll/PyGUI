@@ -1,6 +1,6 @@
 import pygame
 from pygame.math import Vector2 as V2
-from typing import Any, Optional, Union, Callable
+from typing import Callable
 
 
 class Vector2(V2):
@@ -19,18 +19,19 @@ class Game(object):
         self.display = pygame.display.set_mode(screenSize)
         self.clock = pygame.time.Clock()
 
-        self.tickCall:Callable[[int], None] = lambda _: None
-        self.drawCall:Callable[[], None] = lambda: None
+        self.tickCall: Callable[[int], None] = lambda _: None
+        self.drawCall: Callable[[], None] = lambda: None
         self.eventDict = EVENTDICT
         self.keyDownDict = KEYDOWNDICT
+        self.running: bool = False
 
     def run(self):
-        self.running:bool = True
+        self.running: bool = True
         while self.running:
             self.tick()
         
     def tick(self):
-        dt:int = self.clock.tick()
+        dt: int = self.clock.tick()
         self.handleEvents()
         self.tickCall(dt)
         self.draw()
@@ -54,7 +55,6 @@ class Game(object):
 
     def exit(self):
         self.running = False
-
 
 
 class Drawable(object):

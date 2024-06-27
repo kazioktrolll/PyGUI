@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="PyGUI",
-    version="0.0.1",
+    version="0.1.0",
     author="kazioktrolll",
     author_email="",
     description="A short description of your project",
