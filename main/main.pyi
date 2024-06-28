@@ -51,8 +51,8 @@ class Image(Drawable):
     def draw(self) -> None: ...
 
 class TextBox(Drawable):
-    def __init__(self, display: pygame.Surface, pos: AnyVector, font: pygame.font.Font | None,
-                 fontColor: Color | None) -> None:
+    def __init__(self, display: pygame.Surface, pos: AnyVector, font: pygame.font.Font = None,
+                 fontColor: Color = None) -> None:
         self.font: pygame.font.Font = None
         self.text: str = None
         self.font = pygame.font.Font = None
