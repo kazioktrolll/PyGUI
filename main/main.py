@@ -56,6 +56,10 @@ class Game(object):
     def exit(self):
         self.running = False
 
+    @staticmethod
+    def setCaption(caption):
+        pygame.display.set_caption(caption)
+
 
 class Drawable(object):
     def __init__(self, display, pos):
@@ -84,4 +88,20 @@ class Image(Drawable):
         self.display.blit(self.image, self.pos.int())
 
 
-__all__ = ["Vector2", "Game", "Drawable", "Image", "EVENTDICT", "KEYDOWNDICT"]
+pygame.font.init()
+
+
+class TextBox(Drawable):
+    def __init__(self, display, pos, font=pygame.font.SysFont('Arial', 20), fontColor='#ffffff'):
+        super().__init__(display, pos)
+        self.font = pygame.font.SysFont('Arial', 20)
+        self.text = ''
+        self.font = font
+        self.fontColor = fontColor
+
+    def draw(self):
+        dispText = self.font.render(self.text, True, self.fontColor)
+        self.display.blit(dispText, self.pos.int())
+
+
+__all__ = ["Vector2", "Game", "Drawable", "Image", "TextBox", "EVENTDICT", "KEYDOWNDICT"]
