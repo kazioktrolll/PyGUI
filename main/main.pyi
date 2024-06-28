@@ -5,6 +5,7 @@ from typing import Union, Callable, Dict, Tuple, Any
 
 AnyVector = Union[Tuple[float, float], V2, Vector2]
 EventDictType = Dict[int, Callable[[], None]]
+Color = pygame.Color
 
 EVENTDICT:EventDictType
 
@@ -29,6 +30,8 @@ class Game:
     def exit(self) -> None: ...
     def tickCall(self, dt: int) -> None: ...
     def drawCall(self) -> None: ...
+    @staticmethod
+    def setCaption(caption: str) -> None: ...
 
 
 class Drawable:
@@ -44,5 +47,15 @@ class Drawable:
 class Image(Drawable):
     def __init__(self, display: pygame.Surface, pos:AnyVector, image:pygame.Surface) -> None:
         self.image: pygame.Surface = None
+        ...
+    def draw(self) -> None: ...
+
+class TextBox(Drawable):
+    def __init__(self, display: pygame.Surface, pos: AnyVector, font: pygame.font.Font,
+                 fontColor: Color) -> None:
+        self.font: pygame.font.Font = None
+        self.text: str = None
+        self.font = pygame.font.Font = None
+        self.fontColor: Color = None
         ...
     def draw(self) -> None: ...
