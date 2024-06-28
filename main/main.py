@@ -94,13 +94,29 @@ class TextBox(Drawable):
     def __init__(self, display, pos, font=pygame.font.SysFont('Arial', 20), fontColor='#ffffff'):
         super().__init__(display, pos)
         self.font = pygame.font.SysFont('Arial', 20)
-        self.text = ''
+        self.text = ""
         self.font = font
         self.fontColor = fontColor
+        self.isActive = False
+        self.trueText = ""
 
     def draw(self):
         dispText = self.font.render(self.text, True, self.fontColor)
         self.display.blit(dispText, self.pos.int())
+
+    def type(self, char):
+        def backspace():
+            self.text = self.text[:-1]
+
+        def newLine():
+            self.text += "\n"
+
+        specialKeys = {'08': backspace, '13': newLine}
+        if char in specialKeys:
+            specialKeys[char]()
+            return None
+
+        self.text += char
 
 
 __all__ = ["Vector2", "Game", "Drawable", "Image", "TextBox", "EVENTDICT", "KEYDOWNDICT"]
