@@ -90,7 +90,6 @@ class Image(Drawable):
 
 pygame.font.init()
 
-
 class TextBox(Drawable):
     def __init__(self, display, pos, font=pygame.font.SysFont('Arial', 20), fontColor='#ffffff'):
         super().__init__(display, pos)
