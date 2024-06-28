@@ -1,16 +1,15 @@
 import pygame
-from pygame.math import Vector2 as V2
 from typing import Union, Callable, Dict, Tuple, Any
 
 
-AnyVector = Union[Tuple[float, float], V2, Vector2]
+AnyVector = Union[Tuple[float, float], pygame.math.Vector2, Vector2]
 EventDictType = Dict[int, Callable[[], None]]
 Color = pygame.Color
 
 EVENTDICT:EventDictType
 
 
-class Vector2(V2):
+class Vector2(pygame.math.Vector2):
     def int(self) -> Vector2: ...
 
 class Game:

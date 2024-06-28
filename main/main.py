@@ -1,9 +1,8 @@
 import pygame
-from pygame.math import Vector2 as V2
 from typing import Callable
 
 
-class Vector2(V2):
+class Vector2(pygame.math.Vector2):
     def int(self):
         return Vector2(int(self.x), int(self.y))
 
@@ -89,6 +88,7 @@ class Image(Drawable):
 
 
 pygame.font.init()
+
 
 class TextBox(Drawable):
     def __init__(self, display, pos, font=pygame.font.SysFont('Arial', 20), fontColor='#ffffff'):
