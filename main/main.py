@@ -109,10 +109,12 @@ class Text(Drawable):
 
 
 class TextBox(Text):
-    def __init__(self, display, pos, font=pygame.font.SysFont('Arial', 20), fontColor='#ffffff'):
+    def __init__(self, display, pos, font=pygame.font.SysFont('Arial', 20), fontColor='#ffffff',
+                 fontColorActive = '#00ff00'):
         super().__init__(display, pos, "", font, fontColor)
         self.isActive = False
         self.trueText = ""
+        self.fontColorActive = fontColorActive
 
     def type(self, char):
         def backspace():
@@ -127,6 +129,11 @@ class TextBox(Text):
             return None
 
         self.text += char
+
+    def draw(self):
+        color = self.fontColor if not self.isActive else self.fontColorActive
+        dispText = self.font.render(self.text, True, color)
+        self.display.blit(dispText, self.pos.int())
 
 
 __all__ = ["Vector2", "Game", "Drawable", "Image", "TextBox", "EVENTDICT", "KEYDOWNDICT"]
