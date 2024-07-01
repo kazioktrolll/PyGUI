@@ -90,19 +90,29 @@ class Image(Drawable):
 pygame.font.init()
 
 
-class TextBox(Drawable):
-    def __init__(self, display, pos, font=pygame.font.SysFont('Arial', 20), fontColor='#ffffff'):
+class Text(Drawable):
+    def __init__(self, display, pos, text='', font=pygame.font.SysFont('Arial', 20), fontColor='#ffffff'):
         super().__init__(display, pos)
-        self.font = pygame.font.SysFont('Arial', 20)
-        self.text = ""
+        self.text = text
         self.font = font
         self.fontColor = fontColor
-        self.isActive = False
-        self.trueText = ""
 
     def draw(self):
         dispText = self.font.render(self.text, True, self.fontColor)
         self.display.blit(dispText, self.pos.int())
+
+    def write(self, text):
+        self.text = text
+
+    def clear(self):
+        self.text = ''
+
+
+class TextBox(Text):
+    def __init__(self, display, pos, font=pygame.font.SysFont('Arial', 20), fontColor='#ffffff'):
+        super().__init__(display, pos, "", font, fontColor)
+        self.isActive = False
+        self.trueText = ""
 
     def type(self, char):
         def backspace():
