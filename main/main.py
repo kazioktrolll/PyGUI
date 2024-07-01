@@ -136,4 +136,4 @@ class TextBox(Text):
         self.display.blit(dispText, self.pos.int())
 
 
-__all__ = ["Vector2", "Game", "Drawable", "Image", "TextBox", "EVENTDICT", "KEYDOWNDICT"]
+__all__ = ["Vector2", "Game", "Drawable", "Image", "Text", "TextBox", "EVENTDICT", "KEYDOWNDICT"]
