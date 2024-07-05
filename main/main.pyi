@@ -5,8 +5,7 @@ from typing import Union, Callable, Dict, Tuple, Any, Optional
 AnyVector = Union[Tuple[float, float], pygame.math.Vector2, Vector2]
 EventDictType = Dict[int, Callable[[], None]]
 Color = pygame.Color
-
-EVENTDICT:EventDictType
+Event = pygame.event.Event
 
 
 class Vector2(pygame.math.Vector2):
@@ -17,9 +16,9 @@ class Game:
         self.display: pygame.Surface = None
         self.clock: pygame.time.Clock = None
         self.running: bool = None
-        self.tickCall = Callable[[int], None]
-        self.drawCall: Callable[[], None]
-        self.eventDict: EventDictType = None
+        self.tickCall: Callable[[int], None] = None
+        self.drawCall: Callable[[], None] = None
+        self.eventCall: Callable[[Event], None] = None
         self.keyDownDict: Any = None
         ...
     def run(self) -> None: ...

@@ -1,14 +1,9 @@
 import pygame
-from typing import Callable
 
 
 class Vector2(pygame.math.Vector2):
     def int(self):
         return Vector2(int(self.x), int(self.y))
-
-
-EVENTDICT = {}
-KEYDOWNDICT = {}
 
 
 class Game(object):
@@ -18,10 +13,9 @@ class Game(object):
         self.display = pygame.display.set_mode(screenSize)
         self.clock = pygame.time.Clock()
 
-        self.tickCall: Callable[[int], None] = lambda _: None
-        self.drawCall: Callable[[], None] = lambda: None
-        self.eventDict = EVENTDICT
-        self.keyDownDict = KEYDOWNDICT
+        self.tickCall = lambda _: None
+        self.drawCall = lambda: None
+        self.eventCall = lambda _: None
         self.running: bool = False
 
     def run(self):
@@ -32,25 +26,21 @@ class Game(object):
     def tick(self):
         dt: int = self.clock.tick()
         self.handleEvents()
-        self.tickCall.__call__(dt)
+        self.tickCall(dt)
         self.draw()
 
     def draw(self):
         self.display.fill('#000000')
-        self.drawCall.__call__()
+        self.drawCall()
         pygame.display.flip()
 
     def handleEvents(self):
         for event in pygame.event.get():
+            # Check if quit
             if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                 self.running = False
 
-            if event.type in self.eventDict:
-                self.eventDict[event.type]()
-
-            if event.type == pygame.KEYDOWN:
-                if event.key in self.eventDict.keys():
-                    self.eventDict[event.key]()
+            self.eventCall(event)
 
     def exit(self):
         self.running = False
@@ -142,6 +132,6 @@ class TextBox(Text):
         self.display.blit(dispText, self.pos.int())
 
 
-__all__ = ["Vector2", "Game", "Drawable", "Image", "Text", "TextBox", "EVENTDICT", "KEYDOWNDICT"]
+__all__ = ["Vector2", "Game", "Drawable", "Image", "Text", "TextBox"]
 
 pygame.font.quit()
