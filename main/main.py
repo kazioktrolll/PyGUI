@@ -118,13 +118,25 @@ class TextBox(Text):
             self.text += "\n"
 
         specialKeys = {'08': backspace, '13': newLine}
-        if char is pygame.K_ESCAPE:
-            return False
         if char in specialKeys:
             specialKeys[char]()
 
         self.text += char
-        return True
+
+    def handleEvents(self, event):
+        if not self.isActive:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.isClicked(event.pos):
+                self.isActive = True
+            return None
+
+        if event.type != pygame.KEYDOWN:
+            return None
+
+        if event.key == pygame.K_ESCAPE:
+            self.isActive = False
+            return None
+        self.type(event)
+
 
     def draw(self):
         color = self.fontColor if not self.isActive else self.fontColorActive
