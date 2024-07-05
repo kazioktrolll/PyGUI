@@ -61,9 +61,10 @@ class Game(object):
 
 
 class Drawable(object):
-    def __init__(self, display, pos):
+    def __init__(self, display, pos, hitbox=None):
         self.display = display
         self.pos = Vector2(pos)
+        self.hitbox = hitbox
     
     def tick(self, dt):
         raise NotImplementedError()
@@ -76,6 +77,9 @@ class Drawable(object):
 
     def moveBy(self, offset):
         self.pos += Vector2(offset)
+
+    def isClicked(self, clickPos):
+        return self.hitbox.get_at((clickPos - self.pos).int()) == '#ffffff'
 
 
 class Image(Drawable):
@@ -110,7 +114,7 @@ class Text(Drawable):
 
 class TextBox(Text):
     def __init__(self, display, pos, font=pygame.font.SysFont('Arial', 20), fontColor='#ffffff',
-                 fontColorActive = '#00ff00'):
+                 fontColorActive='#00ff00'):
         super().__init__(display, pos, "", font, fontColor)
         self.isActive = False
         self.trueText = ""
@@ -137,3 +141,5 @@ class TextBox(Text):
 
 
 __all__ = ["Vector2", "Game", "Drawable", "Image", "Text", "TextBox", "EVENTDICT", "KEYDOWNDICT"]
+
+pygame.font.quit()

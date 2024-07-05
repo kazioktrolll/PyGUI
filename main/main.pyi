@@ -1,5 +1,5 @@
 import pygame
-from typing import Union, Callable, Dict, Tuple, Any
+from typing import Union, Callable, Dict, Tuple, Any, Optional
 
 
 AnyVector = Union[Tuple[float, float], pygame.math.Vector2, Vector2]
@@ -34,14 +34,17 @@ class Game:
 
 
 class Drawable:
-    def __init__(self, display:pygame.Surface, pos:AnyVector) -> None:
+    def __init__(self, display:pygame.Surface, pos:AnyVector,
+                 hitbox: Optional[pygame.Surface] = None) -> None:
         self.display: pygame.Surface = None
         self.pos: Vector2 = None
+        self.hitbox: Optional[pygame.Surface] = None
         ...
     def tick(self, dt:int) -> None: ...
     def draw(self) -> None: ...
     def moveTo(self, pos:AnyVector) -> None: ...
     def moveBy(self, offset:AnyVector) -> None: ...
+    def isClicked(self, clickPos: AnyVector) -> bool: ...
 
 class Image(Drawable):
     def __init__(self, display: pygame.Surface, pos:AnyVector, image:pygame.Surface) -> None:
