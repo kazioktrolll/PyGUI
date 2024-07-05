@@ -32,12 +32,12 @@ class Game(object):
     def tick(self):
         dt: int = self.clock.tick()
         self.handleEvents()
-        self.tickCall(dt)
+        self.tickCall.__call__(dt)
         self.draw()
 
     def draw(self):
         self.display.fill('#000000')
-        self.drawCall()
+        self.drawCall.__call__()
         pygame.display.flip()
 
     def handleEvents(self):
@@ -128,11 +128,13 @@ class TextBox(Text):
             self.text += "\n"
 
         specialKeys = {'08': backspace, '13': newLine}
+        if char is pygame.K_ESCAPE:
+            return False
         if char in specialKeys:
             specialKeys[char]()
-            return None
 
         self.text += char
+        return True
 
     def draw(self):
         color = self.fontColor if not self.isActive else self.fontColorActive
