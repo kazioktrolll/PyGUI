@@ -91,8 +91,24 @@ class Text(Drawable):
         self.font = font
         self.fontColor = fontColor
 
+    def renderText(self, fontColor):
+        FONT = self.font
+        # Split the text into lines
+        lines = self.text.split('\n')
+        surfaces = [FONT.render(line, True, fontColor) for line in lines]
+
+        total_height = sum(surface.get_height() for surface in surfaces)
+        max_width = max(surface.get_width() for surface in surfaces)
+        surface = pygame.Surface((max_width, total_height))
+
+        y = 0
+        for line_surface in surfaces:
+            surface.blit(line_surface, self.pos + Vector2(0, y))
+            y += line_surface.get_height()
+        return surface
+
     def draw(self):
-        dispText = self.font.render(self.text, True, self.fontColor)
+        dispText = self.renderText(self.fontColor)
         self.display.blit(dispText, self.pos.int())
 
     def write(self, text):
@@ -110,16 +126,17 @@ class TextBox(Text):
         self.trueText = ""
         self.fontColorActive = fontColorActive
 
-    def type(self, char):
+    def type(self, char, key):
         def backspace():
             self.text = self.text[:-1]
 
         def newLine():
             self.text += "\n"
 
-        specialKeys = {'08': backspace, '13': newLine}
-        if char in specialKeys:
-            specialKeys[char]()
+        specialKeys = {pygame.K_BACKSPACE: backspace, pygame.K_RETURN: newLine}
+        if key in specialKeys:
+            specialKeys[key]()
+            return None
 
         self.text += char
 
@@ -135,15 +152,26 @@ class TextBox(Text):
         if event.key == pygame.K_ESCAPE:
             self.isActive = False
             return None
-        self.type(event)
-
+        self.type(event.unicode, event.key)
 
     def draw(self):
         color = self.fontColor if not self.isActive else self.fontColorActive
-        dispText = self.font.render(self.text, True, color)
+        dispText = self.renderText(color)
         self.display.blit(dispText, self.pos.int())
 
 
 __all__ = ["Vector2", "Game", "Drawable", "Image", "Text", "TextBox"]
 
 pygame.font.quit()
+pygame.quit()
+
+
+if __name__ == '__main__':
+    g = Game((300, 300))
+    tb = TextBox(g.display, (0, 0))
+    tb.write("Hello World!")
+    tb.font = pygame.font.SysFont('Arial', 20)
+    tb.isActive = True
+    g.drawCall = tb.draw
+    g.eventCall = tb.handleEvents
+    g.run()
