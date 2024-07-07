@@ -11,7 +11,7 @@ Event = pygame.event.Event
 class Vector2(pygame.math.Vector2):
     def int(self) -> Tuple[int, int]: ...
 
-class Game:
+class Game(object):
     def __init__(self, screenSize: tuple[int, int]) -> None:
         self.display: pygame.Surface = None
         self.clock: pygame.time.Clock = None
