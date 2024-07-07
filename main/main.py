@@ -73,7 +73,7 @@ class Drawable(object):
             return False
         if clickPos[0] >= self.hitbox.get_width() or clickPos[1] >= self.hitbox.get_height():
             return False
-        return self.hitbox.get_at(Vector2(clickPos - self.pos).int()) == '#ffffff'
+        return self.hitbox.get_at(Vector2(clickPos - self.pos).int()) == (255, 255, 255, 255)
 
 
 class Image(Drawable):
@@ -151,6 +151,8 @@ class TextBox(Text):
         self.text += char
 
     def handleEvents(self, event):
+        if not self.isActive:
+            return None
         if event.type != pygame.KEYDOWN:
             return None
 
