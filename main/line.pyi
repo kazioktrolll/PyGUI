@@ -7,7 +7,10 @@ from typing import Tuple
 
 
 class LineAbstract(object):
-    def __init__(self, point1: AnyVector, point2: AnyVector) -> LineAbstract: ...
+    def __init__(self, point1: AnyVector, point2: AnyVector) -> LineAbstract:
+        self.point1: Vector2 = None
+        self.point2: Vector2 = None
+        ...
     @classmethod
     def by_angle(cls, point: AnyVector, angle: float) -> LineAbstract: ...
     @classmethod
