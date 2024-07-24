@@ -10,6 +10,7 @@ Event = pygame.event.Event
 
 class Vector2(pygame.math.Vector2):
     def int(self) -> Tuple[int, int]: ...
+    def tuple(self) -> Tuple[float, float]: ...
 
 class Game(object):
     def __init__(self, screenSize: tuple[int, int]) -> None:

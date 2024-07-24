@@ -5,6 +5,9 @@ class Vector2(pygame.math.Vector2):
     def int(self):
         return int(self.x), int(self.y)
 
+    def tuple(self):
+        return self.x, self.y
+
 
 class Game(object):
     def __init__(self, screenSize):
