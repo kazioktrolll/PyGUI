@@ -1,4 +1,5 @@
 import pygame
+from typing import Union, Tuple
 
 
 class Vector2(pygame.math.Vector2):
@@ -88,6 +89,9 @@ class Image(Drawable):
         self.display.blit(self.image, self.pos.int())
 
 
-__all__ = ["Vector2", "Game", "Drawable", "Image"]
+AnyVector = Union[Tuple[float, float], pygame.math.Vector2, Vector2]
+
+
+__all__ = ["Vector2", "Game", "Drawable", "Image", "AnyVector"]
 
 pygame.quit()
