@@ -63,7 +63,7 @@ class Drawable(object):
     def tick(self, dt):
         raise NotImplementedError()
 
-    def draw(self):
+    def draw(self, offset=(0, 0)):
         raise NotImplementedError()
 
     def moveTo(self, pos):
@@ -85,8 +85,8 @@ class Image(Drawable):
         super().__init__(display, pos)
         self.image = image
 
-    def draw(self):
-        self.display.blit(self.image, self.pos.int())
+    def draw(self, offset=(0, 0)):
+        self.display.blit(self.image, (self.pos + Vector2(offset)).int())
 
 
 AnyVector = Union[Tuple[float, float], pygame.math.Vector2, Vector2]

@@ -1,9 +1,8 @@
-from .main import Drawable, Vector2, AnyVector
+from .main import Drawable, Vector2
 from pygame import Color
 import pygame
 from math import sin, cos, atan, radians, degrees
 import math
-from multipledispatch import dispatch
 
 
 class LineAbstract(object):
@@ -118,7 +117,7 @@ class Line(Drawable):
 
         return points
 
-    def draw(self):
+    def draw(self, offset=(0, 0)):
         if self.isFinite:
             pygame.draw.line(self.display, self.color, self.point1, self.point2, self.thickness)
             return None
@@ -126,7 +125,10 @@ class Line(Drawable):
         a, b = self.line.get_equation()
         point1 = Vector2(-10**3, a*-10**3 + b)
         point2 = Vector2(10**3, a*10**3 + b)
-        pygame.draw.line(self.display, self.color, point1, point2, self.thickness)
+        pygame.draw.line(self.display, self.color,
+                         (point1 + Vector2(offset)).int(),
+                         (point2 + Vector2(offset)).int(),
+                         self.thickness)
         return None
 
 

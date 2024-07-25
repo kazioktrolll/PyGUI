@@ -1,7 +1,6 @@
 import pygame
 from .main import Drawable, Vector2, AnyVector
 from pygame import Color
-from multipledispatch import dispatch
 from typing import Tuple
 
 
@@ -39,4 +38,4 @@ class Line(Drawable):
     def by_equation(cls, display: pygame.Surface, a: float, b: float, color: Color = None,
                     thickness: int = None) -> Line: ...
     def find_render_borders(self, screen_size: Tuple[int, int]) -> Tuple[AnyVector, AnyVector]: ...
-    def draw(self) -> None: ...
+    def draw(self, offset: AnyVector = None) -> None: ...
