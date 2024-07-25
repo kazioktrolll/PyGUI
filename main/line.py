@@ -44,7 +44,6 @@ class LineAbstract(object):
         b = y1 - a * x1
         return a, b
 
-    @dispatch(AnyVector)
     def get_distance(self, point):
         # Returns distance from a given point to the line
         point = Vector2(point)
@@ -57,16 +56,6 @@ class LineAbstract(object):
         distance = numerator / denominator
 
         return distance
-
-    @dispatch('LineAbstract')
-    def get_distance(self, line):
-        a1, b1 = self.get_equation()
-        a2, b2 = line.get_equation()
-
-        if a1 != a2:
-            raise ValueError('Lines must be parallel')
-
-        return line.get_distance(self.point1)
 
     def get_crosspoint(self, line):
         a1, b1 = self.get_equation()
