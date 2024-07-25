@@ -117,19 +117,18 @@ class Line(Drawable):
 
         return points
 
-    def draw(self, offset=(0, 0)):
+    def draw(self):
+        surface = pygame.Surface((10**4, 10**4))
+
         if self.isFinite:
-            pygame.draw.line(self.display, self.color, self.point1, self.point2, self.thickness)
-            return None
+            pygame.draw.line(surface, self.color, self.point1, self.point2, self.thickness)
+            return surface
 
         a, b = self.line.get_equation()
-        point1 = Vector2(-10**3, a*-10**3 + b)
-        point2 = Vector2(10**3, a*10**3 + b)
-        pygame.draw.line(self.display, self.color,
-                         (point1 + Vector2(offset)).int(),
-                         (point2 + Vector2(offset)).int(),
-                         self.thickness)
-        return None
+        point1 = Vector2(-(10**4), a*-(10**4) + b)
+        point2 = Vector2(10**4, a*10**4 + b)
+        pygame.draw.line(surface, self.color, point1.int(), point2.int(), self.thickness)
+        return surface
 
 
 __all__ = ('LineAbstract', 'Line')

@@ -13,9 +13,8 @@ class Text(Drawable):
         self.font = font
         self.fontColor = fontColor
 
-    def draw(self, offset=(0, 0)):
-        dispText = self.renderText(self.fontColor)
-        self.display.blit(dispText, (self.pos + Vector2(offset)).int())
+    def draw(self):
+        return self.renderText(self.fontColor)
 
     def renderText(self, fontColor='#ffffff'):
         FONT = self.font
@@ -75,12 +74,12 @@ class TextBox(Text):
 
         self.type(event.unicode, event.key)
 
-    def draw(self, offset=(0, 0)):
+    def draw(self):
         color = self.fontColor if not self.isActive else self.fontColorActive
         dispText = self.renderText(color)
         if self.flexibleHitbox:
             self.setAutoHitbox()
-        self.display.blit(dispText, (self.pos + Vector2(offset)).int())
+        return dispText
 
 
 pygame.font.quit()

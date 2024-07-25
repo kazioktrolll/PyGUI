@@ -61,9 +61,11 @@ class Drawable(object):
         self.hitbox = hitbox
     
     def tick(self, dt):
+        # Base tick function, called each tick. Uses 'dt' in milliseconds as time from previous tick
         raise NotImplementedError()
 
-    def draw(self, offset=(0, 0)):
+    def draw(self):
+        # Returns surface to blit onto the display
         raise NotImplementedError()
 
     def moveTo(self, pos):
@@ -85,8 +87,8 @@ class Image(Drawable):
         super().__init__(display, pos)
         self.image = image
 
-    def draw(self, offset=(0, 0)):
-        self.display.blit(self.image, (self.pos + Vector2(offset)).int())
+    def draw(self):
+        return self.image
 
 
 AnyVector = Union[Tuple[float, float], pygame.math.Vector2, Vector2]
