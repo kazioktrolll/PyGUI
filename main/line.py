@@ -1,5 +1,6 @@
 from main import Drawable, Vector2, AnyVector
 from pygame import Color
+import pygame
 from math import sin, cos, atan, radians, degrees
 import math
 from multipledispatch import dispatch
@@ -43,7 +44,7 @@ class LineAbstract(object):
         b = y1 - a * x1
         return a, b
 
-    @dispatch(Vector2)
+    @dispatch(AnyVector)
     def get_distance(self, point):
         # Returns distance from a given point to the line
         point = Vector2(point)
@@ -129,5 +130,15 @@ class Line(Drawable):
         return points
 
     def draw(self):
-        # TODO
-        raise NotImplementedError
+        if self.isFinite:
+            pygame.draw.line(self.display, self.color, self.point1, self.point2, self.thickness)
+            return None
+
+        a, b = self.line.get_equation()
+        point1 = Vector2(-10**3, a*-10**3 + b)
+        point2 = Vector2(10**3, a*10**3 + b)
+        pygame.draw.line(self.display, self.color, point1, point2, self.thickness)
+        return None
+
+
+__all__ = ('LineAbstract', 'Line')
