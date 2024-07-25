@@ -1,5 +1,5 @@
 import pygame
-from main import Drawable, Vector2, AnyVector
+from .main import Drawable, Vector2, AnyVector
 from pygame import Color
 from multipledispatch import dispatch
 from typing import Tuple

@@ -1,4 +1,4 @@
-from main import Drawable, Vector2
+from .main import Drawable, Vector2
 import pygame
 
 

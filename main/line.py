@@ -1,4 +1,4 @@
-from main import Drawable, Vector2, AnyVector
+from .main import Drawable, Vector2, AnyVector
 from pygame import Color
 import pygame
 from math import sin, cos, atan, radians, degrees

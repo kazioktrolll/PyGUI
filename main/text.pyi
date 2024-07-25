@@ -1,4 +1,4 @@
-from main import Drawable, AnyVector, Color, Event
+from .main import Drawable, AnyVector, Color, Event
 import pygame
 
 
