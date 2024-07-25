@@ -28,7 +28,7 @@ class Line(Drawable):
         self.point2: Vector2 = None
         self.line: LineAbstract = None
 
-        self.isFinite: bool = None
+        self.is_finite: bool = None
         self.color: Color = None
         self.thickness: int = None
     @classmethod

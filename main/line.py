@@ -69,13 +69,13 @@ class LineAbstract(object):
 
 
 class Line(Drawable):
-    def __init__(self, display, point1, point2, isFinite=False, color=Color('#ffffff'), thickness=1):
+    def __init__(self, display, point1, point2, is_finite=False, color=Color('#ffffff'), thickness=1):
         super().__init__(display=display, pos=point1)
         self.point1 = point1
         self.point2 = point2
         self.line = LineAbstract(point1, point2)
 
-        self.isFinite = isFinite
+        self.is_finite = is_finite
         self.color = color
         self.thickness = thickness
 
@@ -92,25 +92,16 @@ class Line(Drawable):
     def find_render_borders(self, screen_size):
         w, h = screen_size
         points = [0, 0, 0, 0]
-        try:
-            points[0] = self.line.get_crosspoint(LineAbstract((0, 0), (0, h)))
-        except ValueError:
-            points[0] = None
+        coords = (((0, 0), (0, h)),
+                  ((w, 0), (w, h)),
+                  ((0, 0), (w, 0)),
+                  ((0, h), (w, h)))
 
-        try:
-            points[1] = self.line.get_crosspoint(LineAbstract((w, 0), (w, h)))
-        except ValueError:
-            points[1] = None
-
-        try:
-            points[3] = self.line.get_crosspoint(LineAbstract((0, 0), (w, 0)))
-        except ValueError:
-            points[3] = None
-
-        try:
-            points[4] = self.line.get_crosspoint(LineAbstract((0, h), (w, h)))
-        except ValueError:
-            points[4] = None
+        for i in range(4):
+            try:
+                points[i] = self.line.get_crosspoint(LineAbstract(coords[i][0], coords[i][1]))
+            except ValueError:
+                points[i] = None
 
         points.remove(None)
         points.remove(None)
@@ -120,7 +111,7 @@ class Line(Drawable):
     def draw(self):
         surface = pygame.Surface((10**4, 10**4))
 
-        if self.isFinite:
+        if self.is_finite:
             pygame.draw.line(surface, self.color, self.point1, self.point2, self.thickness)
             return surface
 

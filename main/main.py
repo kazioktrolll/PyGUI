@@ -17,9 +17,9 @@ class Game(object):
         self.display = pygame.display.set_mode(screenSize)
         self.clock = pygame.time.Clock()
 
-        self.tickCall = lambda _: None
-        self.drawCall = lambda: None
-        self.eventCall = lambda _: None
+        self.tick_call = lambda _: None
+        self.draw_call = lambda: None
+        self.event_call = lambda _: None
         self.running: bool = False
 
     def run(self):
@@ -29,29 +29,35 @@ class Game(object):
 
     def tick(self):
         dt: int = self.clock.tick()
-        self.handleEvents()
-        self.tickCall(dt)
+        self.handle_events()
+        self.tick_call(dt)
         self.draw()
 
     def draw(self):
         self.display.fill('#000000')
-        self.drawCall()
+        self.draw_call()
         pygame.display.flip()
 
-    def handleEvents(self):
+    def handle_events(self):
         for event in pygame.event.get():
             # Check if quit
             if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                 self.running = False
 
-            self.eventCall(event)
+            self.event_call(event)
 
     def exit(self):
         self.running = False
 
     @staticmethod
-    def setCaption(caption):
+    def set_caption(caption):
         pygame.display.set_caption(caption)
+
+    def quick_render(self, list_of_drawables):
+        for drawable in list_of_drawables:
+            image = drawable.draw()
+            pos = drawable.pos
+            self.display.blit(image, pos)
 
 
 class Drawable(object):
@@ -68,18 +74,18 @@ class Drawable(object):
         # Returns surface to blit onto the display
         raise NotImplementedError()
 
-    def moveTo(self, pos):
+    def move_to(self, pos):
         self.pos = Vector2(pos)
 
-    def moveBy(self, offset):
+    def move_by(self, offset):
         self.pos += Vector2(offset)
 
-    def isClicked(self, clickPos):
+    def is_clicked(self, click_pos):
         if not self.hitbox:
             return False
-        if clickPos[0] >= self.hitbox.get_width() or clickPos[1] >= self.hitbox.get_height():
+        if click_pos[0] >= self.hitbox.get_width() or click_pos[1] >= self.hitbox.get_height():
             return False
-        return self.hitbox.get_at(Vector2(clickPos - self.pos).int()) == (255, 255, 255, 255)
+        return self.hitbox.get_at(Vector2(click_pos - self.pos).int()) == (255, 255, 255, 255)
 
 
 class Image(Drawable):

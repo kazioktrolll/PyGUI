@@ -6,21 +6,21 @@ pygame.font.init()
 
 
 class Text(Drawable):
-    def __init__(self, display, pos, text='', font=pygame.font.SysFont('Arial', 20), fontColor='#ffffff',
+    def __init__(self, display, pos, text='', font=pygame.font.SysFont('Arial', 20), font_color='#ffffff',
                  hitbox=None):
         super().__init__(display, pos, hitbox)
         self.text = text
         self.font = font
-        self.fontColor = fontColor
+        self.font_color = font_color
 
     def draw(self):
-        return self.renderText(self.fontColor)
+        return self.render_text(self.font_color)
 
-    def renderText(self, fontColor='#ffffff'):
+    def render_text(self, font_color='#ffffff'):
         FONT = self.font
         # Split the text into lines
         lines = self.text.split('\n')
-        surfaces = [FONT.render(line, True, fontColor) for line in lines]
+        surfaces = [FONT.render(line, True, font_color) for line in lines]
 
         total_height = sum(surface.get_height() for surface in surfaces)
         max_width = max(surface.get_width() for surface in surfaces)
@@ -32,8 +32,8 @@ class Text(Drawable):
             y += line_surface.get_height()
         return surface
 
-    def setAutoHitbox(self):
-        self.hitbox = pygame.Surface(self.renderText().get_size())
+    def set_auto_hitbox(self):
+        self.hitbox = pygame.Surface(self.render_text().get_size())
         self.hitbox.fill('#ffffff')
 
     def write(self, text):
@@ -44,30 +44,30 @@ class Text(Drawable):
 
 
 class TextBox(Text):
-    def __init__(self, display, pos, font=pygame.font.SysFont('Arial', 20), fontColor='#ffffff',
-                 fontColorActive='#00ff00', flexibleHitbox=True):
-        super().__init__(display, pos, text="", font=font, fontColor=fontColor)
-        self.isActive = False
-        self.trueText = ""
-        self.fontColorActive = fontColorActive
-        self.flexibleHitbox = flexibleHitbox
+    def __init__(self, display, pos, font=pygame.font.SysFont('Arial', 20), font_color='#ffffff',
+                 font_color_active='#00ff00', flexible_hitbox=True):
+        super().__init__(display, pos, text="", font=font, font_color=font_color)
+        self.is_active = False
+        self.true_text = ""
+        self.font_color_active = font_color_active
+        self.flexible_hitbox = flexible_hitbox
 
     def type(self, char, key):
         def backspace():
             self.text = self.text[:-1]
 
-        def newLine():
+        def new_line():
             self.text += "\n"
 
-        specialKeys = {pygame.K_BACKSPACE: backspace, pygame.K_RETURN: newLine}
-        if key in specialKeys:
-            specialKeys[key]()
+        special_keys = {pygame.K_BACKSPACE: backspace, pygame.K_RETURN: new_line}
+        if key in special_keys:
+            special_keys[key]()
             return None
 
         self.text += char
 
-    def handleEvents(self, event):
-        if not self.isActive:
+    def handle_events(self, event):
+        if not self.is_active:
             return None
         if event.type != pygame.KEYDOWN:
             return None
@@ -75,10 +75,10 @@ class TextBox(Text):
         self.type(event.unicode, event.key)
 
     def draw(self):
-        color = self.fontColor if not self.isActive else self.fontColorActive
-        dispText = self.renderText(color)
-        if self.flexibleHitbox:
-            self.setAutoHitbox()
+        color = self.font_color if not self.is_active else self.font_color_active
+        dispText = self.render_text(color)
+        if self.flexible_hitbox:
+            self.set_auto_hitbox()
         return dispText
 
 
