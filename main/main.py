@@ -56,7 +56,7 @@ class Game(object):
     def quick_render(self, list_of_drawables):
         for drawable in list_of_drawables:
             image = drawable.draw()
-            pos = drawable.pos
+            pos = drawable.pos + drawable.draw_offset()
             self.display.blit(image, pos)
 
 
@@ -73,6 +73,10 @@ class Drawable(object):
     def draw(self):
         # Returns surface to blit onto the display
         raise NotImplementedError()
+
+    def draw_offset(self):
+        # Used when coordinate used to display the object is different from Drawable.pos. (0, 0) by default
+        return Vector2(0, 0)
 
     def move_to(self, pos):
         self.pos = Vector2(pos)

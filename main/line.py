@@ -69,13 +69,11 @@ class LineAbstract(object):
 
 
 class Line(Drawable):
-    def __init__(self, display, point1, point2, is_finite=False, color=Color('#ffffff'), thickness=1):
+    def __init__(self, display, point1, point2, color=Color('#ffffff'), thickness=1):
         super().__init__(display=display, pos=point1)
         self.point1 = point1
         self.point2 = point2
         self.line = LineAbstract(point1, point2)
-
-        self.is_finite = is_finite
         self.color = color
         self.thickness = thickness
 
@@ -111,15 +109,17 @@ class Line(Drawable):
     def draw(self):
         surface = pygame.Surface((10**4, 10**4))
 
-        if self.is_finite:
-            pygame.draw.line(surface, self.color, self.point1, self.point2, self.thickness)
-            return surface
-
         a, b = self.line.get_equation()
         point1 = Vector2(-(10**4), a*-(10**4) + b)
         point2 = Vector2(10**4, a*10**4 + b)
         pygame.draw.line(surface, self.color, point1.int(), point2.int(), self.thickness)
         return surface
+
+    def draw_offset(self):
+        a, b = self.line.get_equation()
+        draw_point = Vector2(-(10**4), a*-(10**4) + b)
+        offset = self.point1 + draw_point
+        return offset
 
 
 __all__ = ('LineAbstract', 'Line')
