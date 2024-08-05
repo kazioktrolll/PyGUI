@@ -107,6 +107,9 @@ class Line(Drawable):
         return points
 
     def draw(self):
+        # TODO
+        # Dalej nie działa, rysuje się w super dziwnej pozycji, powodzenia o7
+
         surface = pygame.Surface((10**4, 10**4))
 
         a, b = self.line.get_equation()
@@ -122,4 +125,41 @@ class Line(Drawable):
         return offset
 
 
-__all__ = ('LineAbstract', 'Line')
+class HalfLine(Line):
+    # TODO
+    # Skończyć rysowanie kurwa mać
+
+    def __init__(self, display, point1, point2, color=Color('#ffffff'), thickness=1):
+        super().__init__(display=display, point1=point1, point2=point2, color=color, thickness=thickness)
+
+    def draw(self):
+        surface = pygame.Surface((10**4, 10**4))
+        a, b = self.line.get_equation()
+        point1 = self.point1
+        point2 = Vector2(10**4, a*10**4 + b)
+        pygame.draw.line(surface, self.color, point1.int(), point2.int(), self.thickness)
+        return surface
+
+    def draw_offset(self):
+        return Vector2(0, 0)
+
+
+class Segment(Drawable):
+    def __init__(self, display, point1, point2, color=Color('#ffffff'), thickness=1):
+        pos = Vector2(min(point1.x, point2.x), min(point1.y, point2.y))
+        super().__init__(display=display, pos=pos)
+        self.point1 = point1
+        self.point2 = point2
+        self.color = color
+        self.thickness = thickness
+
+    def draw(self):
+        p1, p2 = self.point1, self.point2
+        w, h = abs(p1.x - p2.x), abs(p1.y - p2.y)
+        surface = pygame.Surface((w, h))
+        p1_render, p2_render = p1 - self.pos, p2 - self.pos
+        pygame.draw.line(surface, self.color, p1_render.int(), p2_render.int(), self.thickness)
+        return surface
+
+
+__all__ = ('LineAbstract', 'Line', 'HalfLine', 'Segment')

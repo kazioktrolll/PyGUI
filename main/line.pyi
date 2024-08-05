@@ -38,4 +38,18 @@ class Line(Drawable):
     def by_equation(cls, display: pygame.Surface, a: float, b: float, color: Color = None,
                     thickness: int = None) -> Line: ...
     def find_render_borders(self, screen_size: Tuple[int, int]) -> Tuple[AnyVector, AnyVector]: ...
-    def draw(self) -> pygame.Surface: ...
+
+class HalfLine(Line):
+    def __init__(self, display: pygame.Surface, point1: AnyVector, point2: AnyVector, isFinite: bool = None,
+                 color: Color = None, thickness: int = None):
+        super().__init__(display=display, point1=point1, point2=point2, color=color, thickness=thickness)
+        ...
+
+class Segment(Drawable):
+    def __init__(self, display: pygame.Surface, point1: AnyVector, point2: AnyVector, isFinite: bool = None,
+                 color: Color = None, thickness: int = None):
+        self.point1: Vector2 = None
+        self.point2: Vector2 = None
+        self.color: Color = None
+        self.thickness: int = None
+        ...
