@@ -71,8 +71,8 @@ class LineAbstract(object):
 class Line(Drawable):
     def __init__(self, display, point1, point2, color=Color('#ffffff'), thickness=1):
         super().__init__(display=display, pos=point1)
-        self.point1 = point1
-        self.point2 = point2
+        self.point1 = Vector2(point1)
+        self.point2 = Vector2(point2)
         self.line = LineAbstract(point1, point2)
         self.color = color
         self.thickness = thickness
@@ -146,10 +146,12 @@ class HalfLine(Line):
 
 class Segment(Drawable):
     def __init__(self, display, point1, point2, color=Color('#ffffff'), thickness=1):
-        pos = Vector2(min(point1.x, point2.x), min(point1.y, point2.y))
+        self.point1 = Vector2(point1)
+        self.point2 = Vector2(point2)
+
+        pos = Vector2(min(self.point1.x, self.point2.x), min(self.point1.y, self.point2.y))
         super().__init__(display=display, pos=pos)
-        self.point1 = point1
-        self.point2 = point2
+
         self.color = color
         self.thickness = thickness
 
