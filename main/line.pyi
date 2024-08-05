@@ -21,7 +21,7 @@ class LineAbstract(object):
 
 
 class Line(Drawable):
-    def __init__(self, display: pygame.Surface, point1: AnyVector, point2: AnyVector, isFinite: bool=None,
+    def __init__(self, display: pygame.Surface, point1: AnyVector, point2: AnyVector,
                  color: Color = None, thickness: int = None):
         super().__init__(display=display, pos=point1)
         self.point1: Vector2 = None
@@ -40,13 +40,13 @@ class Line(Drawable):
     def find_render_borders(self, screen_size: Tuple[int, int]) -> Tuple[AnyVector, AnyVector]: ...
 
 class HalfLine(Line):
-    def __init__(self, display: pygame.Surface, point1: AnyVector, point2: AnyVector, isFinite: bool = None,
+    def __init__(self, display: pygame.Surface, point1: AnyVector, point2: AnyVector,
                  color: Color = None, thickness: int = None):
         super().__init__(display=display, point1=point1, point2=point2, color=color, thickness=thickness)
         ...
 
 class Segment(Drawable):
-    def __init__(self, display: pygame.Surface, point1: AnyVector, point2: AnyVector, isFinite: bool = None,
+    def __init__(self, display: pygame.Surface, point1: AnyVector, point2: AnyVector,
                  color: Color = None, thickness: int = None):
         self.point1: Vector2 = None
         self.point2: Vector2 = None
