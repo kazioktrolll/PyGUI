@@ -6,20 +6,21 @@ AnyVector = Union[Tuple[float, float], pygame.math.Vector2, Vector2]
 EventDictType = Dict[int, Callable[[], None]]
 Color = pygame.Color
 Event = pygame.event.Event
+Surface = pygame.surface.SurfaceType
 
 
 class Vector2(pygame.math.Vector2):
-    def int(self) -> Tuple[int, int]: ...
-    def tuple(self) -> Tuple[float, float]: ...
+    def get_intiger_xy(self) -> Tuple[get_intiger_xy, get_intiger_xy]: ...
+    def get_xy(self) -> Tuple[float, float]: ...
 
 class Game(object):
     def __init__(self, screenSize: tuple[int, int]) -> None:
         self.display: pygame.Surface = None
         self.clock: pygame.time.Clock = None
-        self.running: bool = None
-        self.tick_call: Callable[[int], None] = None
-        self.draw_call: Callable[[], None] = None
-        self.event_call: Callable[[Event], None] = None
+        self.is_running: bool = None
+        self.tick_callabe: Callable[[int], None] = None
+        self.draw_callable: Callable[[], None] = None
+        self.event_callable: Callable[[Event], None] = None
         ...
     def run(self) -> None: ...
     def tick(self) -> None: ...
@@ -35,7 +36,7 @@ class Drawable:
     def __init__(self, display:pygame.Surface, pos:AnyVector,
                  hitbox: Optional[pygame.Surface] = None) -> None:
         self.display: pygame.Surface = None
-        self.pos: Vector2 = None
+        self.position: Vector2 = None
         self.hitbox: Optional[pygame.Surface] = None
         ...
     def tick(self, dt:int) -> None: ...

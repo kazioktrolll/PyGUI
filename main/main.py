@@ -3,51 +3,52 @@ from typing import Union, Tuple
 
 
 class Vector2(pygame.math.Vector2):
-    def int(self):
+    def get_intiger_xy(self):
         return int(self.x), int(self.y)
 
-    def tuple(self):
+    def get_xy(self):
         return self.x, self.y
 
 
 class Game(object):
-    def __init__(self, screenSize):
+    def __init__(self, screen_size):
         pygame.init()
 
-        self.display = pygame.display.set_mode(screenSize)
+        self.display = pygame.display.set_mode(screen_size)
         self.clock = pygame.time.Clock()
 
-        self.tick_call = lambda _: None
-        self.draw_call = lambda: None
-        self.event_call = lambda _: None
-        self.running: bool = False
+        self.tick_callabe = lambda _: None
+        self.draw_callable = lambda: None
+        self.event_callable = lambda _: None
+        self.is_running: bool = False
 
     def run(self):
-        self.running: bool = True
-        while self.running:
+        self.is_running: bool = True
+        while self.is_running:
             self.tick()
 
     def tick(self):
-        dt: int = self.clock.tick()
+        frame_time_difference_milliseconds: int = self.clock.tick()
         self.handle_events()
-        self.tick_call(dt)
+        self.tick_callabe(frame_time_difference_milliseconds)
         self.draw()
 
     def draw(self):
         self.display.fill('#000000')
-        self.draw_call()
+        self.draw_callable()
         pygame.display.flip()
 
     def handle_events(self):
         for event in pygame.event.get():
             # Check if quit
             if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-                self.running = False
+                self.is_running = False
+                return None
 
-            self.event_call(event)
+            self.event_callable(event)
 
     def exit(self):
-        self.running = False
+        self.is_running = False
 
     @staticmethod
     def set_caption(caption):
@@ -56,14 +57,14 @@ class Game(object):
     def quick_render(self, list_of_drawables):
         for drawable in list_of_drawables:
             image = drawable.draw()
-            pos = drawable.pos + drawable.draw_offset()
-            self.display.blit(image, pos)
+            position = drawable.pos + drawable.draw_offset()
+            self.display.blit(image, position)
 
 
 class Drawable(object):
-    def __init__(self, display, pos, hitbox=None):
+    def __init__(self, display, position, hitbox=None):
         self.display = display
-        self.pos = Vector2(pos)
+        self.position = Vector2(position)
         self.hitbox = hitbox
     
     def tick(self, dt):
@@ -78,23 +79,23 @@ class Drawable(object):
         # Used when coordinate used to display the object is different from Drawable.pos. (0, 0) by default
         return Vector2(0, 0)
 
-    def move_to(self, pos):
-        self.pos = Vector2(pos)
+    def move_to(self, position):
+        self.position = Vector2(position)
 
     def move_by(self, offset):
-        self.pos += Vector2(offset)
+        self.position += Vector2(offset)
 
-    def is_clicked(self, click_pos):
+    def is_clicked(self, click_position):
         if not self.hitbox:
             return False
-        if click_pos[0] >= self.hitbox.get_width() or click_pos[1] >= self.hitbox.get_height():
+        if click_position[0] >= self.hitbox.get_width() or click_position[1] >= self.hitbox.get_height():
             return False
-        return self.hitbox.get_at(Vector2(click_pos - self.pos).int()) == (255, 255, 255, 255)
+        return self.hitbox.get_at(Vector2(click_position - self.position).get_intiger_xy()) == (255, 255, 255, 255)
 
 
 class Image(Drawable):
-    def __init__(self, display, pos, image):
-        super().__init__(display, pos)
+    def __init__(self, display, position, image):
+        super().__init__(display, position)
         self.image = image
 
     def draw(self):

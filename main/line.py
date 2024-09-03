@@ -5,14 +5,15 @@ from math import sin, cos, atan, radians, degrees
 import math
 
 
-class LineAbstract(object):
+class LineMathematical(object):
+    # Class representing mathematical line
     def __init__(self, point1, point2):
         self.point1 = Vector2(point1)
         self.point2 = Vector2(point2)
 
     @classmethod
     def by_angle(cls, point, angle):
-        # Angle in degrees
+        # Angle in degrees, 0 -> horizontal, increases clockwise
         point = Vector2(point)
         angle = radians(angle)
         point2 = point + Vector2(cos(angle), sin(angle))
@@ -37,8 +38,8 @@ class LineAbstract(object):
 
     def get_equation(self):
         # Returns 'a', 'b' by format 'ax + b = y'
-        x1, y1 = self.point1.tuple()
-        x2, y2 = self.point2.tuple()
+        x1, y1 = self.point1.get_xy()
+        x2, y2 = self.point2.get_xy()
         a = (y1 - y2) / (x1 - x2)
         b = y1 - a * x1
         return a, b
@@ -46,9 +47,9 @@ class LineAbstract(object):
     def get_distance(self, point):
         # Returns distance from a given point to the line
         point = Vector2(point)
-        x1, y1 = self.point1.tuple()
-        x2, y2 = self.point2.tuple()
-        x0, y0 = point.tuple()
+        x1, y1 = self.point1.get_xy()
+        x2, y2 = self.point2.get_xy()
+        x0, y0 = point.get_xy()
 
         numerator = abs((y2 - y1) * x0 - (x2 - x1) * y0 + x2 * y1 - y2 * x1)
         denominator = math.sqrt((y2 - y1) ** 2 + (x2 - x1) ** 2)
@@ -69,22 +70,23 @@ class LineAbstract(object):
 
 
 class Line(Drawable):
+    # Unstable, should not be used
     def __init__(self, display, point1, point2, color=Color('#ffffff'), thickness=1):
         super().__init__(display=display, pos=point1)
         self.point1 = Vector2(point1)
         self.point2 = Vector2(point2)
-        self.line = LineAbstract(point1, point2)
+        self.line = LineMathematical(point1, point2)
         self.color = color
         self.thickness = thickness
 
     @classmethod
     def by_angle(cls, display, point, angle, color=Color('#ffffff'), thickness=1):
-        line = LineAbstract.by_angle(point, angle)
+        line = LineMathematical.by_angle(point, angle)
         return cls(display=display, point1=line.point1, point2=line.point2, color=color, thickness=thickness)
 
     @classmethod
     def by_equation(cls, display, a, b, color=Color('#ffffff'), thickness=1):
-        line = LineAbstract.by_equation(a, b)
+        line = LineMathematical.by_equation(a, b)
         return cls(display=display, point1=line.point1, point2=line.point2, color=color, thickness=thickness)
 
     def find_render_borders(self, screen_size):
@@ -97,7 +99,7 @@ class Line(Drawable):
 
         for i in range(4):
             try:
-                points[i] = self.line.get_crosspoint(LineAbstract(coords[i][0], coords[i][1]))
+                points[i] = self.line.get_crosspoint(LineMathematical(coords[i][0], coords[i][1]))
             except ValueError:
                 points[i] = None
 
@@ -115,7 +117,7 @@ class Line(Drawable):
         a, b = self.line.get_equation()
         point1 = Vector2(-(10**4), a*-(10**4) + b)
         point2 = Vector2(10**4, a*10**4 + b)
-        pygame.draw.line(surface, self.color, point1.int(), point2.int(), self.thickness)
+        pygame.draw.line(surface, self.color, point1.get_intiger_xy(), point2.get_intiger_xy(), self.thickness)
         return surface
 
     def draw_offset(self):
@@ -124,8 +126,8 @@ class Line(Drawable):
         offset = self.point1 + draw_point
         return offset
 
-
 class HalfLine(Line):
+    # Unstable, should not be used
     # TODO
     # Skończyć rysowanie kurwa mać
 
@@ -137,7 +139,7 @@ class HalfLine(Line):
         a, b = self.line.get_equation()
         point1 = self.point1
         point2 = Vector2(10**4, a*10**4 + b)
-        pygame.draw.line(surface, self.color, point1.int(), point2.int(), self.thickness)
+        pygame.draw.line(surface, self.color, point1.get_intiger_xy(), point2.get_intiger_xy(), self.thickness)
         return surface
 
     def draw_offset(self):
@@ -159,9 +161,9 @@ class Segment(Drawable):
         p1, p2 = self.point1, self.point2
         w, h = abs(p1.x - p2.x), abs(p1.y - p2.y)
         surface = pygame.Surface((w, h))
-        p1_render, p2_render = p1 - self.pos, p2 - self.pos
-        pygame.draw.line(surface, self.color, p1_render.int(), p2_render.int(), self.thickness)
+        p1_render, p2_render = p1 - self.position, p2 - self.position
+        pygame.draw.line(surface, self.color, p1_render.get_intiger_xy(), p2_render.get_intiger_xy(), self.thickness)
         return surface
 
 
-__all__ = ('LineAbstract', 'Line', 'HalfLine', 'Segment')
+__all__ = ('LineMathematical', 'Line', 'HalfLine', 'Segment')
