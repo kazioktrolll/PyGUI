@@ -105,6 +105,6 @@ class Image(Drawable):
 AnyVector = Union[Tuple[float, float], pygame.math.Vector2, Vector2]
 
 
-__all__ = ["Vector2", "Game", "Drawable", "Image", "AnyVector"]
+__all__ = ["Vector2", "Game", "Drawable", "Image", "AnyVector", "pygame"]
 
 pygame.quit()
